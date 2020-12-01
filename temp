@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo "set terminal wxt"
+echo "set xdata time"
+echo 'set timefmt "%H-%M"'
+echo 'set xtics format "%H:%M"'
+echo "plot '-' using 1:2 with boxes"
+
+while read LINE
+do
+TIME=$(echo $LINE | cut -d "," -f 3)
+TEMP=$(echo $LINE | cut -d "," -f 6)
+T=$(echo $TIME | cut -d "T" -f 2)
+HOURS=$(echo $T | cut -d ":" -f 1)
+MINUTES=$(echo $T | cut -d ":" -f 2)
+echo "$HOURS-$MINUTES $TEMP"
+done
+
+echo "e"

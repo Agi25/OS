@@ -1,0 +1,49 @@
+#!/bin/bash
+if [ "$#" == 2 ]
+then
+echo "l"
+DATE=$1
+CODE=$2
+echo "DATE: $1"
+echo "CODE: $2"
+
+D1=$(echo $DATE |cut -d '-' -f 1)
+D2=$(echo $DATE |cut -d '-' -f 2)
+D3=$(echo $DATE |cut -d '-' -f 3)
+WHOLEDATE="$D2/$D1/$D3"
+
+START=$(date -d "$WHOLEDATE" +%s)
+DAY=$(bc <<< "60*60*24")
+FINISH=$(bc <<< $START+$DAY)
+
+elif [ "$#" == 1 ]
+then
+#DATE=$(date --date= "yesterday 00:00")
+CODE=$1
+echo "CODE: $1"
+#WHOLEDATE=$DATE
+
+#echo $WHOLEDATE
+
+START=$(date --date="yesterday 00:00" +%s)
+DAY=$(bc <<< "60*60*24")
+FINISH=$(bc <<< $START+$DAY)
+
+#echo $START
+#echo $FINISH
+
+fi
+
+VAR1='https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=csv&stationString='
+C=$CODE
+VAR2='&startTime='
+VAR3='&endTime='
+
+WHOLE="$VAR1$C$VAR2$START$VAR3$FINISH"
+
+
+curl -s "$WHOLE"
+
+#curl -s 'https://aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=csv&stationString=LZIB&hoursBeforeNow=2'
+
+# date -d "11/20/2020" +%s
